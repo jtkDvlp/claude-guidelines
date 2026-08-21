@@ -306,6 +306,8 @@ Funktionen, Namespaces und Schichten haben je einen Fokus und behandeln auch nur
 
 ### Namenskonventionen
 
+**Namen möglichst nach der Fachlichkeit wählen, nicht nach der Technik.** Ein Name soll sagen, was etwas in der Domäne bedeutet, nicht wie es implementiert ist oder aus welcher Standard-Datenstruktur es stammt (`leaf`/`node` verrät nur "Baum", nicht "Fenster mit Größenanteil"). Technische Namen sind zweitrangig — passend nur dort, wo es keine bessere fachliche Entsprechung gibt oder der Code selbst generische Technik ist (z.B. eine Zipper-Hilfsfunktion).
+
 Namen stehen in Kleinbuchstaben, Wörter werden durch Bindestriche getrennt. Funktionsnamen enthalten meist ein Verb.
 
 | Zeichen | Position | Bedeutung |
