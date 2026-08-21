@@ -73,6 +73,8 @@ Die Präfixe sind für Kommentare mit *besonderer* Bedeutung gedacht, nicht für
 
 **Kommentare erklären das Warum, nicht das Was.** Der Code sagt bereits, was passiert. Wertvoll ist, was man ihm nicht ansieht: die verworfene Alternative, die Messung hinter einer Zahl, die Fußangel der Plattform, der Grund für einen scheinbaren Umweg.
 
+**Kommentare kurz und knapp, für Entwickler.** Keine Rückschau auf abgelöste Fassungen — was der Code früher tat, steht in der Versionsgeschichte. Messwerte, `WATCHOUT` und `NOTE` bleiben: Sie beschreiben, was jetzt gilt, und ersparen das erneute Messen.
+
 **Nicht offensichtliche Entscheidungen gehören dokumentiert** — an Ort und Stelle im Code, und wenn sie die Architektur betreffen zusätzlich in der Projekt-CLAUDE.md. Faustregel: Wenn jemand die Stelle in einem halben Jahr für einen Fehler halten und „aufräumen" könnte, fehlt der Kommentar.
 
 **Konstanten mit Bedeutung bekommen einen Namen** und eine Erklärung, keine Zahl im Ausdruck. Besonders bei Schwellwerten, Zeitspannen und Grenzen.
