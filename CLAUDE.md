@@ -331,3 +331,5 @@ Namen stehen in Kleinbuchstaben, Wörter werden durch Bindestriche getrennt. Fun
 **Vor schwer umkehrbaren Schritten fragen.** Löschen, Überschreiben, alles nach außen Wirkende.
 
 **Über Pull Requests arbeiten, nicht direkt committen.** Änderungen gehen auf einem Branch und über einen PR in den Hauptzweig, nicht per Direkt-Commit dorthin. Das hält den Hauptzweig jederzeit in einem Zustand, den andere ungeprüft übernehmen können.
+
+**Erst ein offizieller Feature-Branch, dann die Arbeit.** Vor der ersten Änderung an einem Feature wird dafür ein eigener Branch angelegt; alle Commits dazu gehen auf diesen Branch. Der PR entsteht erst, wenn das Feature fertig ist — nicht als leerer PR zu Beginn.
