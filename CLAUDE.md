@@ -10,6 +10,10 @@ arbeitet man unbemerkt gegen einen veralteten Stand der Richtlinien. Liegt
 ein neuerer Stand vor, wird er gezogen, bevor die eigentliche Arbeit
 beginnt.
 
+Das gilt nicht nur beim Start: Eine Sitzung kann sich über Tage hinziehen.
+Deshalb wird auch zwischendurch — etwa vor größeren Arbeitsschritten oder
+in regelmäßigen Abständen — erneut geprüft, nicht nur einmal zu Beginn.
+
 ## Projektstruktur
 
 | Verzeichnis | Inhalt |
