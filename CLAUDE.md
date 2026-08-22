@@ -2,6 +2,18 @@
 
 Gilt für alle Projekte. Projektspezifische CLAUDE.md-Dateien ergänzen oder überschreiben das hier bewusst — im Konflikt gewinnt die Projektdatei.
 
+**Regelmäßig auf Aktualität prüfen.** Diese Datei wird von den Projekten
+per Import eingebunden, nicht kopiert. Trotzdem lohnt sich zu Beginn einer
+Arbeitssitzung ein kurzer Blick, ob das lokale `claude-guidelines`-Repo den
+aktuellen Stand hat (`git fetch` + Vergleich mit dem Remote-Branch) — sonst
+arbeitet man unbemerkt gegen einen veralteten Stand der Richtlinien. Liegt
+ein neuerer Stand vor, wird er gezogen, bevor die eigentliche Arbeit
+beginnt.
+
+Das gilt nicht nur beim Start: Eine Sitzung kann sich über Tage hinziehen.
+Deshalb wird auch zwischendurch — etwa vor größeren Arbeitsschritten oder
+in regelmäßigen Abständen — erneut geprüft, nicht nur einmal zu Beginn.
+
 ## Projektstruktur
 
 | Verzeichnis | Inhalt |
@@ -329,3 +341,7 @@ Namen stehen in Kleinbuchstaben, Wörter werden durch Bindestriche getrennt. Fun
 **Ergebnisse ehrlich berichten.** Was nicht funktioniert, wird gesagt — mit der Ausgabe dazu. Was übersprungen wurde, wird gesagt. Eine frühere Falschaussage wird richtiggestellt, sobald sie auffällt, ohne Umschweife und ohne Selbstgeißelung.
 
 **Vor schwer umkehrbaren Schritten fragen.** Löschen, Überschreiben, alles nach außen Wirkende.
+
+**Über Pull Requests arbeiten, nicht direkt committen.** Änderungen gehen auf einem Branch und über einen PR in den Hauptzweig, nicht per Direkt-Commit dorthin. Das hält den Hauptzweig jederzeit in einem Zustand, den andere ungeprüft übernehmen können.
+
+**Erst ein offizieller Feature-Branch, dann die Arbeit.** Vor der ersten Änderung an einem Feature wird dafür ein eigener Branch angelegt; alle Commits dazu gehen auf diesen Branch. Der PR entsteht erst, wenn das Feature fertig ist — nicht als leerer PR zu Beginn.
