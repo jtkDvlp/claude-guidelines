@@ -329,3 +329,5 @@ Namen stehen in Kleinbuchstaben, Wörter werden durch Bindestriche getrennt. Fun
 **Ergebnisse ehrlich berichten.** Was nicht funktioniert, wird gesagt — mit der Ausgabe dazu. Was übersprungen wurde, wird gesagt. Eine frühere Falschaussage wird richtiggestellt, sobald sie auffällt, ohne Umschweife und ohne Selbstgeißelung.
 
 **Vor schwer umkehrbaren Schritten fragen.** Löschen, Überschreiben, alles nach außen Wirkende.
+
+**Über Pull Requests arbeiten, nicht direkt committen.** Änderungen gehen auf einem Branch und über einen PR in den Hauptzweig, nicht per Direkt-Commit dorthin. Das hält den Hauptzweig jederzeit in einem Zustand, den andere ungeprüft übernehmen können.
