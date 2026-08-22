@@ -2,6 +2,14 @@
 
 Gilt für alle Projekte. Projektspezifische CLAUDE.md-Dateien ergänzen oder überschreiben das hier bewusst — im Konflikt gewinnt die Projektdatei.
 
+**Regelmäßig auf Aktualität prüfen.** Diese Datei wird von den Projekten
+per Import eingebunden, nicht kopiert. Trotzdem lohnt sich zu Beginn einer
+Arbeitssitzung ein kurzer Blick, ob das lokale `claude-guidelines`-Repo den
+aktuellen Stand hat (`git fetch` + Vergleich mit dem Remote-Branch) — sonst
+arbeitet man unbemerkt gegen einen veralteten Stand der Richtlinien. Liegt
+ein neuerer Stand vor, wird er gezogen, bevor die eigentliche Arbeit
+beginnt.
+
 ## Projektstruktur
 
 | Verzeichnis | Inhalt |
