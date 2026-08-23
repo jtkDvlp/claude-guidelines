@@ -18,7 +18,7 @@ in regelmäßigen Abständen — erneut geprüft, nicht nur einmal zu Beginn.
 
 | Verzeichnis | Inhalt |
 |---|---|
-| `src/` | Quellcode. Darunter **immer** die Artifact-Group als Pfad: `src/<bereich>/de/jtkdvlp/<artifact>/…` |
+| `src/` | Quellcode. Darunter **immer** die Artifact-Group als Pfad: `src/de/jtkdvlp/<artifact>/…`, bei mehreren Build-Zielen `src/<bereich>/de/jtkdvlp/<artifact>/…` |
 | `resources/` | **Nur handgeschriebene** Assets. Hier liegt niemals ein Kompilat. |
 | `target/` | **Alles Generierte** — Kompilate und kopierte Assets. Die Struktur darunter ist frei. Muss jederzeit löschbar sein, ohne dass etwas verloren geht. |
 | `dev/` | Alles, was zur Entwicklung gehört, aber nicht zum Produkt. Gibt es immer. |
@@ -27,6 +27,26 @@ in regelmäßigen Abständen — erneut geprüft, nicht nur einmal zu Beginn.
 | `scripts/` | Build-, Start- und Hilfsskripte. |
 
 **Artifact-Group ist `de.jtkdvlp`.** Der Artifact-Name folgt darunter, also `de.jtkdvlp.<artifact>` als Namespace-Wurzel und `de/jtkdvlp/<artifact>/` als Pfad.
+
+**Die Bereichsebene entsteht erst mit dem zweiten Build-Ziel.** Solange ein
+Projekt nur einen Build hat, liegt der Quellcode direkt unter
+`src/de/jtkdvlp/<artifact>/…`. Ein `<bereich>` trennt Build-Pfade
+voneinander — Haupt- und Renderer-Prozess bei Electron, Server und Client
+bei einer Webanwendung. Wo es nur einen Pfad gibt, trennt er nichts und
+kostet bloß eine Ebene.
+
+**Bereiche werden fachlich benannt, nie `common` oder `shared`.** Solche
+Namen beschreiben eine technische Eigenschaft — „wird von mehreren benutzt"
+— und sagen nichts über den Inhalt. Genau daraus entsteht das Sammelbecken,
+das mit jeder Funktion wächst, ohne je eine Grenze zu ziehen. Braucht ein
+Thema wirklich mehrere Bereiche, bekommt es einen eigenen, nach dem Thema
+benannten.
+
+**Vor jeder Struktur-Ebene die Frage: Was trennt sie *heute*?** Lässt sich
+das nicht konkret beantworten, entsteht sie später. Ein `git mv` kostet
+nichts; eine Ebene ohne Zweck kostet bei jedem Lesen. Das gilt auch für
+einen Nutzen, der „bestimmt bald" eintritt — er tritt oft nicht ein, und
+dann bleibt die Ebene stehen und wird für Absicht gehalten.
 
 **Temporäres gehört nach `dev/tmp/`**, nicht nach `/tmp` und nicht ins Projektwurzelverzeichnis. Wenn eine Datei ausnahmsweise woanders liegen muss (etwa weil ein Werkzeug `dev/tmp` ausblendet), gehört der Grund als Kommentar in die `.gitignore`.
 
@@ -134,6 +154,23 @@ Verdopplung im Handler besser als eine Event-Kette.
 Davon unberührt: Ein *Effect*, der nach getaner Arbeit ein Event auslöst
 (asynchrones Ergebnis, IPC-Antwort), ist genau richtig -- das ist kein
 Handler, der weiterreicht, sondern die Rückmeldung aus der Außenwelt.
+
+**Der Client zeigt an und nimmt Eingaben entgegen — die Businesslogik liegt
+im Server.** Der Client bildet sie nicht ein zweites Mal ab. Ein
+Server-Roundtrip je Eingabe ist dafür der richtige Preis:
+
+- Der Roundtrip trägt wenig Daten und dauert entsprechend kurz.
+- Er sichert die Persistenz. Es gibt **eine** Datenwahrheit, nicht zwei
+  Stände, die auseinanderlaufen können.
+- Der Client lädt nur, was er anzeigt. Rechnete er selbst, müsste er die
+  Daten dafür erst alle holen.
+- Server und Client können nicht auseinanderlaufen, weil im Client keine
+  zweite Abbildung der Fachlichkeit liegt, die man nachziehen müsste.
+
+Daraus folgt auch, wo der Code liegt: Fachlogik, die nur der Server
+ausführt, ist ein Thema **des Servers**. Sie wird nicht zum geteilten
+Baustein und nicht zu `.cljc`, bloß weil sie theoretisch auch im Browser
+liefe. Erst ein tatsächlicher zweiter Aufrufer ändert das.
 
 **Electron: Aktionen im Main-Prozess laufen über eine IPC-Brücke.** Der
 Renderer greift nie direkt zu, sondern löst ein Event aus; ein Effect
