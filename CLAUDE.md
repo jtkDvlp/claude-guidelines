@@ -18,7 +18,7 @@ in regelmäßigen Abständen — erneut geprüft, nicht nur einmal zu Beginn.
 
 | Verzeichnis | Inhalt |
 |---|---|
-| `src/` | Quellcode. Darunter **immer** die Artifact-Group als Pfad: `src/<bereich>/de/jtkdvlp/<artifact>/…` |
+| `src/` | Quellcode. Darunter **immer** die Artifact-Group als Pfad: `src/de/jtkdvlp/<artifact>/…`, bei mehreren Build-Zielen `src/<bereich>/de/jtkdvlp/<artifact>/…` |
 | `resources/` | **Nur handgeschriebene** Assets. Hier liegt niemals ein Kompilat. |
 | `target/` | **Alles Generierte** — Kompilate und kopierte Assets. Die Struktur darunter ist frei. Muss jederzeit löschbar sein, ohne dass etwas verloren geht. |
 | `dev/` | Alles, was zur Entwicklung gehört, aber nicht zum Produkt. Gibt es immer. |
