@@ -18,7 +18,7 @@ in regelmäßigen Abständen — erneut geprüft, nicht nur einmal zu Beginn.
 
 | Verzeichnis | Inhalt |
 |---|---|
-| `src/` | Quellcode. Darunter **immer** die Artifact-Group als Pfad: `src/de/jtkdvlp/<artifact>/…`, bei mehreren Build-Zielen `src/<bereich>/de/jtkdvlp/<artifact>/…` |
+| `src/` | Quellcode. Darunter **immer** die Artifact-Group als Pfad: `src/jtkdvlp/<artifact>/…`, bei mehreren Build-Zielen `src/<bereich>/jtkdvlp/<artifact>/…` |
 | `resources/` | **Nur handgeschriebene** Assets. Hier liegt niemals ein Kompilat. |
 | `target/` | **Alles Generierte** — Kompilate und kopierte Assets. Die Struktur darunter ist frei. Muss jederzeit löschbar sein, ohne dass etwas verloren geht. |
 | `dev/` | Alles, was zur Entwicklung gehört, aber nicht zum Produkt. Gibt es immer. |
@@ -26,11 +26,11 @@ in regelmäßigen Abständen — erneut geprüft, nicht nur einmal zu Beginn.
 | `dev/sample/` | Beispiel- und Testdateien, etwa große Dateien für Performance-Messungen. |
 | `scripts/` | Build-, Start- und Hilfsskripte. |
 
-**Artifact-Group ist `de.jtkdvlp`.** Der Artifact-Name folgt darunter, also `de.jtkdvlp.<artifact>` als Namespace-Wurzel und `de/jtkdvlp/<artifact>/` als Pfad.
+**Artifact-Group ist `jtkdvlp`.** Der Artifact-Name folgt darunter, also `jtkdvlp.<artifact>` als Namespace-Wurzel und `jtkdvlp/<artifact>/` als Pfad.
 
 **Die Bereichsebene entsteht erst mit dem zweiten Build-Ziel.** Solange ein
 Projekt nur einen Build hat, liegt der Quellcode direkt unter
-`src/de/jtkdvlp/<artifact>/…`. Ein `<bereich>` trennt Build-Pfade
+`src/jtkdvlp/<artifact>/…`. Ein `<bereich>` trennt Build-Pfade
 voneinander — Haupt- und Renderer-Prozess bei Electron, Server und Client
 bei einer Webanwendung. Wo es nur einen Pfad gibt, trennt er nichts und
 kostet bloß eine Ebene.
@@ -112,6 +112,8 @@ Die Präfixe sind für Kommentare mit *besonderer* Bedeutung gedacht, nicht für
 **Eine Zahl, ein Ort.** Wenn derselbe Wert an zwei Stellen gebraucht wird (etwa in CSS und im Code), wird er an einer Stelle definiert und an der anderen gelesen. Doppelt gepflegte Werte laufen beim ersten Nachjustieren auseinander.
 
 **Dem umgebenden Code folgen** — Namensgebung, Kommentardichte, Idiome. Ein Projekt soll wie aus einer Hand wirken, nicht wie eine Sammlung von Handschriften.
+
+**Fachbegriffe in Fließtext werden mit Markdown hervorgehoben** — Bezeichner, Funktionsnamen und Schlüsselwörter in Backticks (`` `impulse` ``, `` `retracement` ``), statt sie unmarkiert im Satz stehen zu lassen. Das gilt für Kommentare und Docstrings ebenso wie für Texte, die der Code selbst erzeugt und die später als Markdown gerendert werden — etwa Erklärungen, die eine Analyse zu ihrem Ergebnis mitliefert.
 
 ## Bibliotheken und Frameworks
 
@@ -306,15 +308,15 @@ Hat ein Prozess **mehrere Systeme** (etwa Electron mit Haupt- und Renderer-Proze
 `:require` und `:import` werden umgebrochen (ein Eintrag je Zeile) und **nach Stabilität gruppiert**: erst Clojure selbst, dann Fremdbibliotheken, dann die eigenen Quellen. Innerhalb einer Gruppe alphabetisch. Zwischen den Gruppen eine Leerzeile.
 
 ```clojure
-(ns de.jtkdvlp.beispiel.core
+(ns jtkdvlp.beispiel.core
   "Kurz, wofür dieser Namespace da ist."
   (:require
    [clojure.string :as string]
 
    [re-frame.core :as re-frame]
 
-   [de.jtkdvlp.beispiel.buffer :as buffer]
-   [de.jtkdvlp.beispiel.files :as files]))
+   [jtkdvlp.beispiel.buffer :as buffer]
+   [jtkdvlp.beispiel.files :as files]))
 ```
 
 **Aliase sind sprechend.** Abkürzungen werden vermieden; wo eine steht, muss sie eindeutig und unmissverständlich sein. `:refer` gezielt einsetzen, nicht pauschal.
