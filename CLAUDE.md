@@ -384,3 +384,15 @@ Namen stehen in Kleinbuchstaben, Wörter werden durch Bindestriche getrennt. Fun
 **Über Pull Requests arbeiten, nicht direkt committen.** Änderungen gehen auf einem Branch und über einen PR in den Hauptzweig, nicht per Direkt-Commit dorthin. Das hält den Hauptzweig jederzeit in einem Zustand, den andere ungeprüft übernehmen können.
 
 **Erst ein offizieller Feature-Branch, dann die Arbeit.** Vor der ersten Änderung an einem Feature wird dafür ein eigener Branch angelegt; alle Commits dazu gehen auf diesen Branch. Der PR entsteht erst, wenn das Feature fertig ist — nicht als leerer PR zu Beginn.
+
+**Ein PR ist ein abgeschlossener Vorgang, kein einzelner Schritt.** Mehrere Commits darin sind der Normalfall, nicht die Ausnahme. Lieber ein PR mit fünf Commits als fünf PRs mit je einem: Wer die Änderung beurteilen soll, braucht das Ganze vor sich, und jeder PR kostet für sich eine Runde Lesen, Warten und Mergen. Dass es dadurch weniger PRs werden, ist kein Nachteil, solange jeder für sich ein Thema abschließt.
+
+Die Grenze zieht der Hauptzweig: Ein PR ist richtig geschnitten, wenn der Hauptzweig nach dem Merge in einem sinnvollen Zustand ist — nichts halb Eingebautes, nichts, das erst der nächste PR benutzbar macht. Eine Aufteilung, die diesem Maßstab nicht standhält, ist keine.
+
+**Die Commits im PR sind die Lesereihenfolge.** Jeder ein nachvollziehbarer Schritt mit eigener Botschaft, und wo es geht für sich lauffähig — so kann man den PR Commit für Commit lesen statt als einen Klumpen Diff. Kein `wip`, kein `fix`, kein `fix2`: Was nur Zwischenstand war, wird vor dem PR zusammengefasst.
+
+**PRs nicht aufeinander stapeln.** Jeder PR geht gegen den Hauptzweig. Ein PR auf einen anderen PR sieht ordentlich aus, ist beim Mergen aber eine Falle: Wird der untere zuerst gemergt, zeigt der obere weiterhin auf dessen Branch — der Merge läuft dann anstandslos durch und landet trotzdem nicht im Hauptzweig. Auffallen tut das erst, wenn dort etwas fehlt.
+
+Geht es ausnahmsweise nicht anders, gehört die Merge-Reihenfolge in die PR-Beschreibung, und nach jedem Merge wird geprüft, ob die Änderung wirklich im Hauptzweig steht — nicht nur, ob der Merge geklappt hat.
+
+**Den Branch nach dem Merge löschen.** Er hat seinen Zweck erfüllt, sein Inhalt steht im Hauptzweig. Stehengelassene Branches sammeln sich an, und nach ein paar Wochen weiß niemand mehr, welcher davon noch etwas enthält, das nirgends angekommen ist.
