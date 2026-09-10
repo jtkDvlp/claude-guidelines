@@ -503,6 +503,31 @@ einem Branch und über einen PR in den Hauptzweig, nicht per Direkt-Commit
 dorthin. Das hält den Hauptzweig jederzeit in einem Zustand, den andere
 ungeprüft übernehmen können.
 
+**Der Hauptzweig ist der Default-Branch des Repos.** Dorthin geht ein PR. Die
+eine Ausnahme ist eine Änderung, die ausdrücklich zu einer Wartungslinie gehört
+— ein Fix für eine ältere, noch gepflegte Major-Version. Dann ist für diesen
+Vorgang deren Zweig der Hauptzweig, und alles, was hier über den Hauptzweig
+steht, gilt sinngemäß für ihn.
+
+**Releases sind Tags, keine Zweige.** Ein Tag ist unveränderlich und markiert
+einen Punkt auf dem Stamm; an einem Release arbeitet niemand weiter. Ein Zweig
+entsteht erst, wenn eine ältere Linie noch Fixes bekommt, während der Stamm
+schon weiter ist — und erst dann, nicht vorsorglich.
+
+**Der Default-Branch wird nicht umgestellt, um die Anzeige zu reparieren.** Die
+Versuchung ist da: GitHub rendert die README des Default-Branch, und wenn der
+dem letzten Release voraus ist, liest ein Besucher Doku zu Code, den er noch gar
+nicht bekommen kann. Den stabilen Zweig zum Default zu machen tauscht das aber
+nur gegen ein Arbeitsproblem — PRs zielen dann standardmäßig falsch, Beitragende
+zweigen von der falschen Stelle ab, und die halbe Oberfläche geht davon aus,
+dass im Default entwickelt wird.
+
+Dagegen helfen zwei Mittel, die beide nichts kosten: ein CHANGELOG mit einem
+`Unreleased`-Abschnitt, in dem der Unterschied sichtbar steht, statt zu täuschen
+— und ein Verweis auf die versionierte Doku, bei Clojure also cljdoc, das je
+Version rendert. Die Version im Installationsschnipsel gehört als Badge in die
+README, damit dort automatisch die veröffentlichte steht und nicht die im Zweig.
+
 **Erst ein offizieller Feature-Branch, dann die Arbeit.** Vor der ersten
 Änderung an einem Feature wird dafür ein eigener Branch angelegt; alle Commits
 dazu gehen auf diesen Branch. Der PR entsteht erst, wenn das Feature fertig ist
