@@ -153,6 +153,11 @@ passiert. Wertvoll ist, was man ihm nicht ansieht: die verworfene Alternative,
 die Messung hinter einer Zahl, die Fußangel der Plattform, der Grund für einen
 scheinbaren Umweg.
 
+**Kommentare kurz und knapp, für Entwickler.** Keine Rückschau auf abgelöste
+Fassungen — was der Code früher tat, steht in der Versionsgeschichte. Messwerte,
+`WATCHOUT` und `NOTE` bleiben: Sie beschreiben, was jetzt gilt, und ersparen das
+erneute Messen.
+
 **Nicht offensichtliche Entscheidungen gehören dokumentiert** — an Ort und
 Stelle im Code, und wenn sie die Architektur betreffen zusätzlich in der
 Projekt-CLAUDE.md. Faustregel: Wenn jemand die Stelle in einem halben Jahr für
@@ -457,6 +462,13 @@ Funktionen. Eine Trennung ist nicht in jedem Fall möglich; Ausnahmen bestätige
 die Regel.
 
 ### Namenskonventionen
+
+**Namen möglichst nach der Fachlichkeit wählen, nicht nach der Technik.** Ein
+Name soll sagen, was etwas in der Domäne bedeutet, nicht wie es implementiert
+ist oder aus welcher Standard-Datenstruktur es stammt (`leaf`/`node` verrät nur
+"Baum", nicht "Fenster mit Größenanteil"). Technische Namen sind zweitrangig —
+passend nur dort, wo es keine bessere fachliche Entsprechung gibt oder der Code
+selbst generische Technik ist (z.B. eine Zipper-Hilfsfunktion).
 
 Namen stehen in Kleinbuchstaben, Wörter werden durch Bindestriche getrennt.
 Funktionsnamen enthalten meist ein Verb.
