@@ -653,7 +653,10 @@ kein zweites Mal an.
   nur das Changelog fortgeschrieben, und das Paket trägt weiter die alte Zahl.
 - **Das Tag-Format muss zu den vorhandenen Tags passen.** Heißen sie `3.6.1`,
   gehört `include-v-in-tag: false` in die Konfiguration; mit `v` fände
-  release-please die Historie nicht wieder und finge bei `1.0.0` an.
+  release-please die Historie nicht wieder und finge bei `1.0.0` an. Der
+  **Anzeigename des Releases hat eine eigene Option**
+  (`include-v-in-release-name`) — wer nur die Tag-Option setzt, bekommt einen
+  Tag `4.0.0` und darüber ein Release namens `v4.0.0`.
 - **Die Manifest-Datei gehört der Maschine.** Sie hält den zuletzt
   veröffentlichten Stand und wird nicht von Hand editiert.
 
