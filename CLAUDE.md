@@ -582,6 +582,19 @@ steht im Hauptzweig. Stehengelassene Branches sammeln sich an, und nach ein paar
 Wochen weiß niemand mehr, welcher davon noch etwas enthält, das nirgends
 angekommen ist.
 
+**WATCHOUT: Claude kann keine Remote-Branches löschen.** `git push --delete`
+läuft in ein HTTP 403, und die GitHub-Anbindung hat für das Löschen gar kein
+Werkzeug — sie kennt nur `create_branch`. Das ist keine Einstellung am Repo,
+sondern eine Eigenschaft des Zugangs. Also nicht probieren und nicht mehrfach
+nachfassen: Wenn ein Branch weg soll, wird das **benannt** und der Nutzer
+löscht ihn. Dazu gehört die Prüfung, dass nichts verlorengeht — für einen
+Feature-Branch, dass er im Hauptzweig steckt, für einen Release-Zweig, dass
+seine Spitze am Tag hängt.
+
+```
+git push origin --delete <branch>
+```
+
 ## Versionierung und Release
 
 Gilt für jede veröffentlichte Bibliothek. **Die Versionsnummer wird nicht von
