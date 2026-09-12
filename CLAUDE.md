@@ -540,6 +540,11 @@ Dagegen helfen zwei Mittel, die beide nichts kosten: ein CHANGELOG mit einem
 Version rendert. Die Version im Installationsschnipsel gehört als Badge in die
 README, damit dort automatisch die veröffentlichte steht und nicht die im Zweig.
 
+Läuft die Release-Automatisierung aus dem nächsten Abschnitt, übernimmt der
+offene Release-PR die Rolle des `Unreleased`-Abschnitts: Dort steht, was noch
+nicht veröffentlicht ist, samt der Version, die es bekommen wird. Von Hand
+gepflegt wird das Changelog dann nicht mehr.
+
 **Erst ein offizieller Feature-Branch, dann die Arbeit.** Vor der ersten
 Änderung an einem Feature wird dafür ein eigener Branch angelegt; alle Commits
 dazu gehen auf diesen Branch. Der PR entsteht erst, wenn das Feature fertig ist
@@ -576,3 +581,102 @@ Hauptzweig steht — nicht nur, ob der Merge geklappt hat.
 steht im Hauptzweig. Stehengelassene Branches sammeln sich an, und nach ein paar
 Wochen weiß niemand mehr, welcher davon noch etwas enthält, das nirgends
 angekommen ist.
+
+## Versionierung und Release
+
+Gilt für jede veröffentlichte Bibliothek. **Die Versionsnummer wird nicht von
+Hand gepflegt** — sie ergibt sich aus den Commit-Nachrichten. Eine von Hand
+gesetzte Zahl wird irgendwann vergessen, und dann trägt das Paket eine andere
+als der Tag.
+
+### Conventional Commits
+
+Jede Commit-Nachricht folgt
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
+
+```
+<typ>[(<bereich>)][!]: <beschreibung>
+```
+
+| Typ | Wirkung auf die Version |
+|---|---|
+| `fix:` | Patch |
+| `feat:` | Minor |
+| beliebiger Typ mit `!`, oder ein `BREAKING CHANGE:`-Footer | Major |
+| `build:`, `chore:`, `ci:`, `docs:`, `perf:`, `refactor:`, `revert:`, `style:`, `test:` | keine — steht aber im Changelog |
+
+**Das `!` hängt am Typ, nicht an `feat`.** `fix!:` ist ein Bugfix, der bricht,
+und ergibt genauso eine Major-Version.
+
+**Die Regel gilt für jeden einzelnen Commit, nicht nur für den PR-Titel.** PRs
+werden gemergt und nicht gesquasht — jeder Commit des Branches landet also auf
+dem Hauptzweig und wird dort gelesen. Eine CI-Prüfung sieht das bei jedem PR
+nach; Merge-Commits sind ausgenommen, deren Betreff stammt von git.
+
+Das ersetzt nicht, was oben über Commits steht — ein Commit bleibt ein
+nachvollziehbarer Schritt mit eigener Botschaft. Der Typ kommt davor, der Rest
+bleibt, wie er war.
+
+### Der Ablauf
+
+Drei Schritte, und keiner veröffentlicht ohne einen PR, den jemand angesehen
+hat:
+
+| Schritt | Was passiert |
+|---|---|
+| Merge auf den Hauptzweig | [release-please](https://github.com/googleapis/release-please) öffnet bzw. aktualisiert einen Release-PR: die nächste Version in der Build-Datei, die Changelog-Einträge aus den Commits seit dem letzten Tag. |
+| Release-PR mergen | Tag und GitHub-Release entstehen. |
+| Derselbe Workflow-Lauf | testet den getaggten Stand und veröffentlicht ihn. |
+
+Der Release-PR ist damit die Stelle, an der ein Release entschieden wird — und
+nicht ein Commit, der versehentlich das Falsche auslöst.
+
+**WATCHOUT: Der Veröffentlichungs-Job gehört in denselben Workflow-Lauf** wie
+release-please, nicht in einen eigenen `on: release`-Workflow. Ein Release, das
+der `GITHUB_TOKEN` erzeugt, löst keine weiteren Workflows aus — ein getrennter
+Workflow liefe stillschweigend nie.
+
+**Der Job checkt den Tag aus, nicht den Zweig.** Bis er läuft, kann auf dem
+Hauptzweig schon der nächste Commit liegen; veröffentlicht wird genau der
+Stand, der das Release ist.
+
+**Vor dem Veröffentlichen wird ein zweites Mal getestet**, und zwar dasselbe,
+was die CI prüft. Auf dem PR lief der Test gegen den Stand *vor* dem
+Versions-Bump, hier gegen das Artefakt, das gleich hinausgeht. Veröffentlichen
+ist nicht rücknehmbar — die üblichen Paket-Repositories nehmen dieselbe Version
+kein zweites Mal an.
+
+### Drei Stellen, an denen es leise schiefgeht
+
+- **Die Version in der Build-Datei braucht eine Anmerkung**
+  (`x-release-please-version`), damit release-please sie findet. Ohne sie wird
+  nur das Changelog fortgeschrieben, und das Paket trägt weiter die alte Zahl.
+- **Das Tag-Format muss zu den vorhandenen Tags passen.** Heißen sie `3.6.1`,
+  gehört `include-v-in-tag: false` in die Konfiguration; mit `v` fände
+  release-please die Historie nicht wieder und finge bei `1.0.0` an.
+- **Die Manifest-Datei gehört der Maschine.** Sie hält den zuletzt
+  veröffentlichten Stand und wird nicht von Hand editiert.
+
+### Zugangsdaten
+
+Die Zugangsdaten für das Paket-Repository stehen als **Repository-Secrets** und
+kommen über Umgebungsvariablen in den Build. Sie liegen nie in einer Datei im
+Repo, auch nicht in einer ignorierten.
+
+Was ein Secret leistet und was nicht: GitHub speichert es verschlüsselt, zeigt
+es nach dem Anlegen niemandem wieder an und maskiert es in Logs; ein PR aus
+einem Fork bekommt es nicht. Wer aber Schreibrechte auf das Repo hat, kann es
+ausschleusen — ein Workflow, der den Wert irgendwohin schickt, ist ein
+gewöhnlicher Commit. Deshalb ein **Deploy-Token, eingeschränkt auf das eine
+Artefakt**, und nicht das Kontopasswort.
+
+**Signieren bleibt aus, solange kein Schlüssel im Lauf liegt.** Ein
+umgestelltes Flag reicht dafür nicht, und die üblichen Paket-Repositories
+verlangen keine Signatur.
+
+### Was im Projekt bleibt
+
+Die Richtlinie beschreibt den Vorgang. Projektspezifisch ist nur, **woran** er
+hängt: welche Datei die Version trägt, wie das Paket-Repository heißt, wie die
+Secrets heißen und welcher Befehl veröffentlicht. Das steht in der
+Projekt-CLAUDE.md — und zwar nur das.
