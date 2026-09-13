@@ -229,6 +229,16 @@ dort beschriebenen Muster gelten, insbesondere:
 - Event-Handler sind **pure**. Jeder Seiteneffekt gehört in einen Effect
   (`reg-fx`), jeder Zugriff auf die Außenwelt in einen Coeffect (`reg-cofx` plus
   `inject-cofx`). Dateisystem, Zeit, Zufall, DOM: alles davon.
+- **Das meint den Handler, nicht jeden Interceptor.** `inject-cofx` ist selbst
+  nur ein Interceptor, und re-frames eigener `:debug` schreibt aus `:before`
+  heraus ins Log — Infrastruktur darf unrein sein. Ob ein eigener
+  Infrastruktur-Interceptor trotzdem den Umweg über einen Coeffect nimmt,
+  entscheidet eine andere Frage: **Wird der unreine Wert später verglichen
+  oder von außen gebraucht?** Ein Zeitstempel, der in ein Dokument wandert,
+  oder eine Id, die zum persistenten Schlüssel wird: ja, sonst lässt sie sich
+  im Test nicht setzen und im Replay nicht reproduzieren. Eine Id dagegen, die
+  nur lebt, solange ein Effect unterwegs ist, und die niemand über Läufe
+  hinweg vergleicht: nein — da kostet der Coeffect mehr, als er trägt.
 - In `app-db` liegen **Daten**, keine Funktionen und keine veränderlichen
   Objekte. Sonst sind Serialisierung, Zeitreise-Debugging und die
   Entwicklerwerkzeuge hinüber.
