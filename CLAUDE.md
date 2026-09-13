@@ -146,6 +146,17 @@ zwischen `NOTE:` und `WATCHOUT:`: Ein `NOTE:` erklärt, ein `WATCHOUT:` warnt.
 Wenn das Übersehen des Kommentars zu einem Fehler führen kann, ist es ein
 `WATCHOUT:`.
 
+## Sprache
+
+**Was ins Repository geht, ist auf Englisch** — Quellcode, Bezeichner,
+Kommentare, Docstrings, Commit-Nachrichten, README und die übrige
+Projektdokumentation. Die Projekte sind öffentlich; wer sie findet, liest kein
+Deutsch. Es hilft niemandem, wenn der Code englisch ist und die Erklärung
+daneben nicht.
+
+Deutsch bleibt, wo nur wir lesen: diese Richtlinien und die Verständigung
+untereinander.
+
 ## Code
 
 **Kommentare erklären das Warum, nicht das Was.** Der Code sagt bereits, was
@@ -669,7 +680,10 @@ kein zweites Mal an.
   release-please die Historie nicht wieder und finge bei `1.0.0` an. Der
   **Anzeigename des Releases hat eine eigene Option**
   (`include-v-in-release-name`) — wer nur die Tag-Option setzt, bekommt einen
-  Tag `4.0.0` und darüber ein Release namens `v4.0.0`.
+  Tag `4.0.0` und darüber ein Release namens `v4.0.0`. Und in einer
+  Manifest-Konfiguration stellt release-please zusätzlich den **Paketnamen**
+  voran (`include-component-in-tag`), also `meine-lib-4.0.0`. Drei Optionen,
+  drei Stellschrauben; wer eine setzt, prüft am ersten Release-PR alle drei.
 - **Sichtbar im Changelog heißt versionswirksam.** Die beiden lassen sich
   nicht trennen: release-please leitet die Versionswirkung aus der
   Sichtbarkeit ab, und ohne `feat` oder `fix` darunter fällt die
