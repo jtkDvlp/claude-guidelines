@@ -146,6 +146,33 @@ zwischen `NOTE:` und `WATCHOUT:`: Ein `NOTE:` erklärt, ein `WATCHOUT:` warnt.
 Wenn das Übersehen des Kommentars zu einem Fehler führen kann, ist es ein
 `WATCHOUT:`.
 
+**Ein behobener Flüchtigkeitsfehler bekommt keinen Marker.** Was schiefging
+und warum die Änderung nötig war, gehört in die Commit-Nachricht oder den
+PR — dort sucht man es auch, und dort steht es bei der Änderung statt bei
+der Zeile. Im Quelltext steht danach richtiger Code; ein `WATCHOUT:` darauf
+erzählt bloß Geschichte und verwässert die, die wirklich warnen.
+
+**Der Anlass ist der umgekehrte:** Der *richtige* Code sieht aus wie etwas,
+das man beim Aufräumen vereinfachen würde, und die Vereinfachung bricht
+still. Zwei Beispiele aus `re-frame-tasks`:
+
+- `(->> tasks (filter #(= (:name %) name)) (first))` — wer daraus wieder
+  `(some #(= (:name %) name))` macht, bekommt `true` statt der Task.
+- `(cond-> [] :always (into interceptors))` — `conj` sieht daneben
+  gleichwertig aus, schachtelt aber, und `reg-global-interceptor`
+  registriert dann kommentarlos nichts.
+
+Beides fällt nicht beim Lesen auf und in keinem Test, der nicht genau danach
+sucht. Das ist die besondere Notwendigkeit, auf die ein `WATCHOUT:` zeigt.
+
+**Wo die Grenze verläuft, ist Konsens, kein Gesetz.** Sie ist von Sprache,
+Framework und Bibliothek vorgeprägt — was in ClojureScript eine Falle ist,
+ist anderswo keine —, vor allem aber ist sie das gemeinsame Verständnis der
+Beteiligten. Das bildet sich erst und entwickelt sich weiter, bei jedem
+unterschiedlich schnell. Es wird also immer wieder Fälle geben, die nicht
+passen. Die werden besprochen, und wenn etwas Allgemeines dabei herauskommt,
+hier nachgezogen — sie sind kein Anlass, die Regel für gebrochen zu halten.
+
 ## Sprache
 
 **Was ins Repository geht, ist auf Englisch** — Quellcode, Bezeichner,
