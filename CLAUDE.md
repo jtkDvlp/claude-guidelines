@@ -616,7 +616,7 @@ Jede Commit-Nachricht folgt
 | `fix:` | Patch |
 | `feat:` | Minor |
 | beliebiger Typ mit `!`, oder ein `BREAKING CHANGE:`-Footer | Major |
-| `build:`, `chore:`, `ci:`, `docs:`, `perf:`, `refactor:`, `revert:`, `style:`, `test:` | keine — steht aber im Changelog |
+| `build:`, `chore:`, `ci:`, `docs:`, `perf:`, `refactor:`, `revert:`, `style:`, `test:` | keine — und damit auch kein Changelog-Eintrag, siehe unten |
 
 **Das `!` hängt am Typ, nicht an `feat`.** `fix!:` ist ein Bugfix, der bricht,
 und ergibt genauso eine Major-Version.
@@ -659,7 +659,7 @@ Versions-Bump, hier gegen das Artefakt, das gleich hinausgeht. Veröffentlichen
 ist nicht rücknehmbar — die üblichen Paket-Repositories nehmen dieselbe Version
 kein zweites Mal an.
 
-### Drei Stellen, an denen es leise schiefgeht
+### Vier Stellen, an denen es leise schiefgeht
 
 - **Die Version in der Build-Datei braucht eine Anmerkung**
   (`x-release-please-version`), damit release-please sie findet. Ohne sie wird
@@ -670,6 +670,15 @@ kein zweites Mal an.
   **Anzeigename des Releases hat eine eigene Option**
   (`include-v-in-release-name`) — wer nur die Tag-Option setzt, bekommt einen
   Tag `4.0.0` und darüber ein Release namens `v4.0.0`.
+- **Sichtbar im Changelog heißt versionswirksam.** Die beiden lassen sich
+  nicht trennen: release-please leitet die Versionswirkung aus der
+  Sichtbarkeit ab, und ohne `feat` oder `fix` darunter fällt die
+  Entscheidung auf Patch. Wer die Typen ohne Versionswirkung per
+  `changelog-sections` sichtbar macht, bekommt für einen reinen CI- oder
+  Doku-PR eine Patch-Version. Deshalb steht bei allen außer `feat` und
+  `fix` `hidden: true` — dann entsteht für so einen PR gar kein
+  Release-PR. Der Preis: Diese Commits stehen nirgends außer in der
+  Versionsgeschichte, und genau da gehören sie auch hin.
 - **Die Manifest-Datei gehört der Maschine.** Sie hält den zuletzt
   veröffentlichten Stand und wird nicht von Hand editiert.
 
