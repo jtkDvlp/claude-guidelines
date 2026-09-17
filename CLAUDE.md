@@ -615,6 +615,42 @@ Schritt mit eigener Botschaft, und wo es geht für sich lauffähig — so kann m
 den PR Commit für Commit lesen statt als einen Klumpen Diff. Kein `wip`, kein
 `fix`, kein `fix2`: Was nur Zwischenstand war, wird vor dem PR zusammengefasst.
 
+**Der Mensch ist Author, Claude Committer.** In der Commit-Nachricht steht
+zusätzlich `Co-Authored-By: Claude …`. Die Arbeit ist die des Menschen, den
+Commit-Vorgang führt Claude aus — und die Offenlegung, dass eine KI beteiligt
+war, gehört dazu.
+
+Der Grund ist nicht Etikette. Das Author-Feld ist zwar kein Rechtenachweis —
+Urheberrecht braucht einen Menschen, rein Maschinelles hat keinen Urheber, und
+eine `Co-Authored-By`-Zeile überträgt nichts —, aber GitHub ordnet Commits
+über die Author-Mail einem Konto zu. Steht dort Claude, fehlt die Arbeit im
+Beitragsgraph des Menschen, und das Repository sieht aus, als hätte es jemand
+anderes geschrieben.
+
+**WATCHOUT: In einer Remote-Umgebung steht `git config user.*` auf Claude.**
+Dort entstehen Commits sonst mit Claude als Author *und* Committer. Also zu
+Beginn einer Sitzung prüfen und setzen:
+
+```
+git config user.name  "<Name des Nutzers>"
+git config user.email "<Mail des Nutzers>"
+```
+
+Der Committer bleibt Claude, über `GIT_COMMITTER_NAME` und
+`GIT_COMMITTER_EMAIL` je Commit. Fällt es erst später auf, lässt sich das
+Author-Feld nachziehen, ohne den Inhalt anzufassen:
+
+```
+git filter-branch -f --env-filter '
+if [ "$GIT_AUTHOR_EMAIL" = "noreply@anthropic.com" ]; then
+  export GIT_AUTHOR_NAME="<Name>"; export GIT_AUTHOR_EMAIL="<Mail>"
+fi' -- <basis>..HEAD
+```
+
+Das ändert alle SHAs ab der ersten umgeschriebenen Stelle und braucht einen
+Force-Push — also nur auf einem Zweig, den niemand sonst gerade benutzt, und
+danach Bescheid geben, dass neu gezogen werden muss.
+
 **PRs nicht aufeinander stapeln.** Jeder PR geht gegen den Hauptzweig. Ein PR
 auf einen anderen PR sieht ordentlich aus, ist beim Mergen aber eine Falle: Wird
 der untere zuerst gemergt, zeigt der obere weiterhin auf dessen Branch — der
