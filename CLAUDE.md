@@ -700,7 +700,21 @@ Jede Commit-Nachricht folgt
 | `fix:` | Patch |
 | `feat:` | Minor |
 | beliebiger Typ mit `!`, oder ein `BREAKING CHANGE:`-Footer | Major |
-| `build:`, `chore:`, `ci:`, `docs:`, `perf:`, `refactor:`, `revert:`, `style:`, `test:` | keine — und damit auch kein Changelog-Eintrag, siehe unten |
+| `perf:`, `revert:`, `refactor:`, `docs:` | Patch — sie erreichen den Nutzer, siehe unten |
+| `build:`, `chore:`, `ci:`, `style:`, `test:` | keine — und damit auch kein Changelog-Eintrag, siehe unten |
+
+**Die Trennlinie ist, ob die Änderung den Nutzer erreicht** — als Verhalten
+oder als Dokumentation des Artefakts. `perf` ändert Verhalten, `revert` nimmt
+etwas zurück, das schon draußen war, und ein `refactor` soll zwar nichts
+ändern, wird aber genau dann bemerkt, wenn er es doch tut. Bei einer
+Bibliothek gehören auch Docstrings und README zum Artefakt: cljdoc rendert
+sie je Version, eine Erklärung ohne neue Version erreicht also niemanden.
+Was dagegen nur im Repo wirkt — Werkzeuge, CI, Formatierung, Tests —, bleibt
+versteckt.
+
+**WATCHOUT: `style` meint die Formatierung des Quellcodes**, nicht das
+Aussehen einer Oberfläche. Eine CSS-Änderung, die der Nutzer sieht, ist ein
+`fix` oder ein `feat`.
 
 **Das `!` hängt am Typ, nicht an `feat`.** `fix!:` ist ein Bugfix, der bricht,
 und ergibt genauso eine Major-Version.
@@ -760,12 +774,13 @@ kein zweites Mal an.
 - **Sichtbar im Changelog heißt versionswirksam.** Die beiden lassen sich
   nicht trennen: release-please leitet die Versionswirkung aus der
   Sichtbarkeit ab, und ohne `feat` oder `fix` darunter fällt die
-  Entscheidung auf Patch. Wer die Typen ohne Versionswirkung per
-  `changelog-sections` sichtbar macht, bekommt für einen reinen CI- oder
-  Doku-PR eine Patch-Version. Deshalb steht bei allen außer `feat` und
-  `fix` `hidden: true` — dann entsteht für so einen PR gar kein
-  Release-PR. Der Preis: Diese Commits stehen nirgends außer in der
-  Versionsgeschichte, und genau da gehören sie auch hin.
+  Entscheidung auf Patch. Für die Typen, die den Nutzer erreichen, ist
+  genau das gewollt — ein `docs:`-PR an einer Bibliothek soll eine
+  Patch-Version bekommen, sonst rendert cljdoc die neue Erklärung nie.
+  Für die übrigen ist es der Grund, sie in `changelog-sections` auf
+  `hidden: true` zu stellen: ein reiner CI- oder Werkzeug-PR erzeugt dann
+  gar keinen Release-PR. Der Preis: Diese Commits stehen nirgends außer in
+  der Versionsgeschichte, und genau da gehören sie auch hin.
 - **Die Manifest-Datei gehört der Maschine.** Sie hält den zuletzt
   veröffentlichten Stand und wird nicht von Hand editiert.
 
