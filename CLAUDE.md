@@ -146,6 +146,44 @@ zwischen `NOTE:` und `WATCHOUT:`: Ein `NOTE:` erklärt, ein `WATCHOUT:` warnt.
 Wenn das Übersehen des Kommentars zu einem Fehler führen kann, ist es ein
 `WATCHOUT:`.
 
+**Ein behobener Flüchtigkeitsfehler bekommt keinen Marker.** Was schiefging
+und warum die Änderung nötig war, gehört in die Commit-Nachricht oder den
+PR — dort sucht man es auch, und dort steht es bei der Änderung statt bei
+der Zeile. Im Quelltext steht danach richtiger Code; ein `WATCHOUT:` darauf
+erzählt bloß Geschichte und verwässert die, die wirklich warnen.
+
+**Der Anlass ist der umgekehrte:** Der *richtige* Code sieht aus wie etwas,
+das man beim Aufräumen vereinfachen würde, und die Vereinfachung bricht
+still. Zwei Beispiele aus `re-frame-tasks`:
+
+- `(->> tasks (filter #(= (:name %) name)) (first))` — wer daraus wieder
+  `(some #(= (:name %) name))` macht, bekommt `true` statt der Task.
+- `(cond-> [] :always (into interceptors))` — `conj` sieht daneben
+  gleichwertig aus, schachtelt aber, und `reg-global-interceptor`
+  registriert dann kommentarlos nichts.
+
+Beides fällt nicht beim Lesen auf und in keinem Test, der nicht genau danach
+sucht. Das ist die besondere Notwendigkeit, auf die ein `WATCHOUT:` zeigt.
+
+**Wo die Grenze verläuft, ist Konsens, kein Gesetz.** Sie ist von Sprache,
+Framework und Bibliothek vorgeprägt — was in ClojureScript eine Falle ist,
+ist anderswo keine —, vor allem aber ist sie das gemeinsame Verständnis der
+Beteiligten. Das bildet sich erst und entwickelt sich weiter, bei jedem
+unterschiedlich schnell. Es wird also immer wieder Fälle geben, die nicht
+passen. Die werden besprochen, und wenn etwas Allgemeines dabei herauskommt,
+hier nachgezogen — sie sind kein Anlass, die Regel für gebrochen zu halten.
+
+## Sprache
+
+**Was ins Repository geht, ist auf Englisch** — Quellcode, Bezeichner,
+Kommentare, Docstrings, Commit-Nachrichten, README und die übrige
+Projektdokumentation. Die Projekte sind öffentlich; wer sie findet, liest kein
+Deutsch. Es hilft niemandem, wenn der Code englisch ist und die Erklärung
+daneben nicht.
+
+Deutsch bleibt, wo nur wir lesen: diese Richtlinien und die Verständigung
+untereinander.
+
 ## Code
 
 **Kommentare erklären das Warum, nicht das Was.** Der Code sagt bereits, was
@@ -191,6 +229,16 @@ dort beschriebenen Muster gelten, insbesondere:
 - Event-Handler sind **pure**. Jeder Seiteneffekt gehört in einen Effect
   (`reg-fx`), jeder Zugriff auf die Außenwelt in einen Coeffect (`reg-cofx` plus
   `inject-cofx`). Dateisystem, Zeit, Zufall, DOM: alles davon.
+- **Das meint den Handler, nicht jeden Interceptor.** `inject-cofx` ist selbst
+  nur ein Interceptor, und re-frames eigener `:debug` schreibt aus `:before`
+  heraus ins Log — Infrastruktur darf unrein sein. Ob ein eigener
+  Infrastruktur-Interceptor trotzdem den Umweg über einen Coeffect nimmt,
+  entscheidet eine andere Frage: **Wird der unreine Wert später verglichen
+  oder von außen gebraucht?** Ein Zeitstempel, der in ein Dokument wandert,
+  oder eine Id, die zum persistenten Schlüssel wird: ja, sonst lässt sie sich
+  im Test nicht setzen und im Replay nicht reproduzieren. Eine Id dagegen, die
+  nur lebt, solange ein Effect unterwegs ist, und die niemand über Läufe
+  hinweg vergleicht: nein — da kostet der Coeffect mehr, als er trägt.
 - In `app-db` liegen **Daten**, keine Funktionen und keine veränderlichen
   Objekte. Sonst sind Serialisierung, Zeitreise-Debugging und die
   Entwicklerwerkzeuge hinüber.
@@ -567,6 +615,42 @@ Schritt mit eigener Botschaft, und wo es geht für sich lauffähig — so kann m
 den PR Commit für Commit lesen statt als einen Klumpen Diff. Kein `wip`, kein
 `fix`, kein `fix2`: Was nur Zwischenstand war, wird vor dem PR zusammengefasst.
 
+**Der Mensch ist Author, Claude Committer.** In der Commit-Nachricht steht
+zusätzlich `Co-Authored-By: Claude …`. Die Arbeit ist die des Menschen, den
+Commit-Vorgang führt Claude aus — und die Offenlegung, dass eine KI beteiligt
+war, gehört dazu.
+
+Der Grund ist nicht Etikette. Das Author-Feld ist zwar kein Rechtenachweis —
+Urheberrecht braucht einen Menschen, rein Maschinelles hat keinen Urheber, und
+eine `Co-Authored-By`-Zeile überträgt nichts —, aber GitHub ordnet Commits
+über die Author-Mail einem Konto zu. Steht dort Claude, fehlt die Arbeit im
+Beitragsgraph des Menschen, und das Repository sieht aus, als hätte es jemand
+anderes geschrieben.
+
+**WATCHOUT: In einer Remote-Umgebung steht `git config user.*` auf Claude.**
+Dort entstehen Commits sonst mit Claude als Author *und* Committer. Also zu
+Beginn einer Sitzung prüfen und setzen:
+
+```
+git config user.name  "<Name des Nutzers>"
+git config user.email "<Mail des Nutzers>"
+```
+
+Der Committer bleibt Claude, über `GIT_COMMITTER_NAME` und
+`GIT_COMMITTER_EMAIL` je Commit. Fällt es erst später auf, lässt sich das
+Author-Feld nachziehen, ohne den Inhalt anzufassen:
+
+```
+git filter-branch -f --env-filter '
+if [ "$GIT_AUTHOR_EMAIL" = "noreply@anthropic.com" ]; then
+  export GIT_AUTHOR_NAME="<Name>"; export GIT_AUTHOR_EMAIL="<Mail>"
+fi' -- <basis>..HEAD
+```
+
+Das ändert alle SHAs ab der ersten umgeschriebenen Stelle und braucht einen
+Force-Push — also nur auf einem Zweig, den niemand sonst gerade benutzt, und
+danach Bescheid geben, dass neu gezogen werden muss.
+
 **PRs nicht aufeinander stapeln.** Jeder PR geht gegen den Hauptzweig. Ein PR
 auf einen anderen PR sieht ordentlich aus, ist beim Mergen aber eine Falle: Wird
 der untere zuerst gemergt, zeigt der obere weiterhin auf dessen Branch — der
@@ -581,6 +665,19 @@ Hauptzweig steht — nicht nur, ob der Merge geklappt hat.
 steht im Hauptzweig. Stehengelassene Branches sammeln sich an, und nach ein paar
 Wochen weiß niemand mehr, welcher davon noch etwas enthält, das nirgends
 angekommen ist.
+
+**WATCHOUT: Claude kann keine Remote-Branches löschen.** `git push --delete`
+läuft in ein HTTP 403, und die GitHub-Anbindung hat für das Löschen gar kein
+Werkzeug — sie kennt nur `create_branch`. Das ist keine Einstellung am Repo,
+sondern eine Eigenschaft des Zugangs. Also nicht probieren und nicht mehrfach
+nachfassen: Wenn ein Branch weg soll, wird das **benannt** und der Nutzer
+löscht ihn. Dazu gehört die Prüfung, dass nichts verlorengeht — für einen
+Feature-Branch, dass er im Hauptzweig steckt, für einen Release-Zweig, dass
+seine Spitze am Tag hängt.
+
+```
+git push origin --delete <branch>
+```
 
 ## Versionierung und Release
 
@@ -603,7 +700,7 @@ Jede Commit-Nachricht folgt
 | `fix:` | Patch |
 | `feat:` | Minor |
 | beliebiger Typ mit `!`, oder ein `BREAKING CHANGE:`-Footer | Major |
-| `build:`, `chore:`, `ci:`, `docs:`, `perf:`, `refactor:`, `revert:`, `style:`, `test:` | keine — steht aber im Changelog |
+| `build:`, `chore:`, `ci:`, `docs:`, `perf:`, `refactor:`, `revert:`, `style:`, `test:` | keine — und damit auch kein Changelog-Eintrag, siehe unten |
 
 **Das `!` hängt am Typ, nicht an `feat`.** `fix!:` ist ein Bugfix, der bricht,
 und ergibt genauso eine Major-Version.
@@ -646,7 +743,7 @@ Versions-Bump, hier gegen das Artefakt, das gleich hinausgeht. Veröffentlichen
 ist nicht rücknehmbar — die üblichen Paket-Repositories nehmen dieselbe Version
 kein zweites Mal an.
 
-### Drei Stellen, an denen es leise schiefgeht
+### Vier Stellen, an denen es leise schiefgeht
 
 - **Die Version in der Build-Datei braucht eine Anmerkung**
   (`x-release-please-version`), damit release-please sie findet. Ohne sie wird
@@ -656,7 +753,19 @@ kein zweites Mal an.
   release-please die Historie nicht wieder und finge bei `1.0.0` an. Der
   **Anzeigename des Releases hat eine eigene Option**
   (`include-v-in-release-name`) — wer nur die Tag-Option setzt, bekommt einen
-  Tag `4.0.0` und darüber ein Release namens `v4.0.0`.
+  Tag `4.0.0` und darüber ein Release namens `v4.0.0`. Und in einer
+  Manifest-Konfiguration stellt release-please zusätzlich den **Paketnamen**
+  voran (`include-component-in-tag`), also `meine-lib-4.0.0`. Drei Optionen,
+  drei Stellschrauben; wer eine setzt, prüft am ersten Release-PR alle drei.
+- **Sichtbar im Changelog heißt versionswirksam.** Die beiden lassen sich
+  nicht trennen: release-please leitet die Versionswirkung aus der
+  Sichtbarkeit ab, und ohne `feat` oder `fix` darunter fällt die
+  Entscheidung auf Patch. Wer die Typen ohne Versionswirkung per
+  `changelog-sections` sichtbar macht, bekommt für einen reinen CI- oder
+  Doku-PR eine Patch-Version. Deshalb steht bei allen außer `feat` und
+  `fix` `hidden: true` — dann entsteht für so einen PR gar kein
+  Release-PR. Der Preis: Diese Commits stehen nirgends außer in der
+  Versionsgeschichte, und genau da gehören sie auch hin.
 - **Die Manifest-Datei gehört der Maschine.** Sie hält den zuletzt
   veröffentlichten Stand und wird nicht von Hand editiert.
 
