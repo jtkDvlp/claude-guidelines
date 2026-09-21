@@ -550,6 +550,14 @@ Positionen und Grenzen aus der Konstante ableiten.
 stillschweigend kürzen. Fällt unterwegs etwas auf, das über den Auftrag
 hinausgeht: benennen, nicht einfach miterledigen.
 
+**Nummerierte Verweise werden im Gespräch aufgelöst.** Wer ein Projekt
+über Monate begleitet, hat nicht alle Nummern im Kopf — und ein `P-38` ohne
+Erklärung zwingt den Leser, erst nachzuschlagen, bevor der Satz etwas
+bedeutet. Deshalb steht beim ersten Vorkommen in einer Antwort eine kurze
+Klammer dahinter: „P-38 (im Betrieb schließt keine Position)". Das gilt für
+die Antwort im Chat, nicht für die Dokumente selbst — dort steht die
+Nummer neben ihrem Eintrag und erklärt sich von allein.
+
 **Ergebnisse ehrlich berichten.** Was nicht funktioniert, wird gesagt — mit der
 Ausgabe dazu. Was übersprungen wurde, wird gesagt. Eine frühere Falschaussage
 wird richtiggestellt, sobald sie auffällt, ohne Umschweife und ohne
