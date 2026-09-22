@@ -72,6 +72,37 @@ dabei sagen, welche Zeilen es betrifft.
 
 ## Vorgehen
 
+**Ein Arbeitsschritt endet mit einer Sichtung des Ergebnisses, nicht des
+Quellcodes.** Grüne Tests, ein gelesener Diff und ein durchgelaufener Build
+sagen, dass der Code tut, was er sagt. Sie sagen **nichts** darüber, ob das
+Ergebnis das ist, was erwartet wurde. Also wird am Ende jedes Schritts das
+Ergebnis selbst angesehen — die gerenderte Oberfläche, die gerechneten
+Zahlen, die ausgegebene Datei — und gegen die Erwartung gehalten.
+
+Das ist keine Kür am Schluss, sondern der Takt: lieber zehn kleine Schritte mit
+zehn Sichtungen als ein großer mit einer. Wer erst am Ende sieht, was
+herausgekommen ist, hat den Zeitpunkt verpasst, an dem eine Korrektur noch
+billig war — und weiß dann nicht mehr, welcher der zwanzig Schritte davor die
+Erwartung verlassen hat.
+
+Der Fall, der das ausgelöst hat: Ein Projekt lief über Monate mit grünen
+Suiten, geprüften Diffs und laufender CI. Beim ersten Blick auf das
+**fachliche** Ergebnis stand fest, dass vieles nicht stimmte — und keiner der
+vorangegangenen Prüfschritte hätte das je gezeigt, weil sie alle den Code
+prüften und nicht das, was er produziert.
+
+**Wer sichtet, ist der Mensch — also muss das Sichten billig sein.** Ein
+Ergebnis, das erst nach Bauen, Ausliefern, Konfigurieren und Starten sichtbar
+wird, wird nicht gesichtet, sondern aufgeschoben. Deshalb gehört zum
+Arbeitsschritt, das Ergebnis in eine Form zu bringen, die sich mit einem Klick
+ansehen lässt: eine Seite, ein Bild, eine Tabelle, eine Datei — was zur Sache
+passt. Der Aufwand dafür ist Teil der Aufgabe und nicht Zusatz.
+
+**Die Erwartung wird vorher gesagt, nicht nachher.** „Sieht plausibel aus" ist
+keine Sichtung. Vor dem Schritt gehört hin, was herauskommen soll — welche
+Größenordnung, welche Fälle, was auf keinen Fall. Danach wird verglichen. Wo
+die Erwartung nicht formulierbar ist, ist genau das der erste Befund.
+
 **Messen statt raten.** Bei Performance-, Speicher- oder Timing-Fragen gilt
 keine Vermutung als Befund, bevor sie gemessen ist — auch nicht die eigene. Die
 Ursache liegt regelmäßig woanders als erwartet. Erst messen, dann ändern, dann
