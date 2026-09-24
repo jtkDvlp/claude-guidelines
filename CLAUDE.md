@@ -98,6 +98,15 @@ Arbeitsschritt, das Ergebnis in eine Form zu bringen, die sich mit einem Klick
 ansehen lässt: eine Seite, ein Bild, eine Tabelle, eine Datei — was zur Sache
 passt. Der Aufwand dafür ist Teil der Aufgabe und nicht Zusatz.
 
+**Eine Tabelle muss ohne den Text darum lesbar sein.** Eine Spalte heißt
+nicht „ohne" und „mit", sondern „ohne Rahmen" und „innerhalb des
+Rahmens"; eine Zahl ohne Einheit ist keine Zahl. Der Anlass: Wer das
+Ergebnis sichtet, liest zuerst die Tabelle und den Fließtext oft gar
+nicht — und eine Überschrift, deren Bezugswort im Absatz davor steht,
+zwingt ihn zum Zurückblättern oder, schlimmer, zum Raten. Dieselbe
+Prüfung wie beim Code: Wenn jemand in einem halben Jahr die Spalte
+falsch deuten könnte, fehlt das Wort.
+
 **Die Erwartung wird vorher gesagt, nicht nachher.** „Sieht plausibel aus" ist
 keine Sichtung. Vor dem Schritt gehört hin, was herauskommen soll — welche
 Größenordnung, welche Fälle, was auf keinen Fall. Danach wird verglichen. Wo
