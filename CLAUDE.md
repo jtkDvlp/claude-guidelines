@@ -215,14 +215,19 @@ hier nachgezogen — sie sind kein Anlass, die Regel für gebrochen zu halten.
 
 ## Sprache
 
-**Was ins Repository geht, ist auf Englisch** — Quellcode, Bezeichner,
-Kommentare, Docstrings, Commit-Nachrichten, README und die übrige
-Projektdokumentation. Die Projekte sind öffentlich; wer sie findet, liest kein
-Deutsch. Es hilft niemandem, wenn der Code englisch ist und die Erklärung
-daneben nicht.
+**Nach außen Englisch, zwischen uns Deutsch.**
 
-Deutsch bleibt, wo nur wir lesen: diese Richtlinien und die Verständigung
-untereinander.
+Englisch ist alles, was Nutzer und Beitragende zu sehen bekommen:
+Quellcode, Bezeichner, Kommentare, Docstrings, Commit-Nachrichten,
+PR-Beschreibungen, README, Changelog und die übrige Projektdokumentation.
+Die Projekte sind öffentlich; wer sie findet, liest kein Deutsch. Es hilft
+niemandem, wenn der Code englisch ist und die Erklärung daneben nicht.
+
+Deutsch ist, was nur der Zusammenarbeit zwischen uns dient: diese
+Richtlinien, die Projekt-CLAUDE.md und die Verständigung im Gespräch. Die
+Projekt-CLAUDE.md liegt zwar öffentlich im Repository, ist aber
+Arbeitsanweisung für uns und keine Dokumentation für Nutzer — was ein
+Nutzer wissen muss, steht in README und Docstrings.
 
 ## Code
 
