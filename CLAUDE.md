@@ -598,6 +598,23 @@ Klammer dahinter: „P-38 (im Betrieb schließt keine Position)". Das gilt für
 die Antwort im Chat, nicht für die Dokumente selbst — dort steht die
 Nummer neben ihrem Eintrag und erklärt sich von allein.
 
+**Der Bericht am Ende ist eine gekennzeichnete Zusammenfassung.** Ein
+Gesprächsverlauf besteht aus den Nachrichten des Nutzers, den
+Arbeitsschritten und am Ende jeweils einem Bericht. Der Bericht trägt
+deshalb eine erkennbare Überschrift — wer zurückscrollt, sucht genau ihn
+und nicht die Werkzeugaufrufe davor.
+
+Er ist **kurz und dicht**: Was herauskam, was davon überrascht hat, was
+offen blieb. Keine Nacherzählung der Schritte, keine Wiederholung dessen,
+was ohnehin im Diff steht. Sprachlich sparsam, inhaltlich vollständig —
+die Länge kommt vom Gehalt und nicht von der Ausschmückung.
+
+**Wer sich auf eine Rückfrage bezieht, nimmt ihren Inhalt mit.** „Wie
+gefragt erledigt" zwingt den Leser zum Zurückblättern; „Zur Frage, ob eine
+Korrektur immer drei Wellen hat: nein" steht für sich. Das gilt für die
+eigene Rückfrage ebenso wie für die des Nutzers, und in beide Richtungen —
+auch Tage später liest sich der Verlauf dann noch ohne Rekonstruktion.
+
 **Ergebnisse ehrlich berichten.** Was nicht funktioniert, wird gesagt — mit der
 Ausgabe dazu. Was übersprungen wurde, wird gesagt. Eine frühere Falschaussage
 wird richtiggestellt, sobald sie auffällt, ohne Umschweife und ohne
